@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -la /Users/maxlevy/Downloads | grep -i verseaid)",
+      "Bash(npm --version)",
+      "Bash(npx --yes create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --use-npm --no-turbopack)",
+      "Read(//Users/maxlevy/Documents/**)",
+      "Bash(npx --yes create-next-app@latest verseaid --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --use-npm --no-turbopack)"
+    ]
+  }
+}
