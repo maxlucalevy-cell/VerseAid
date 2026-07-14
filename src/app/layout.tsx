@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Fraunces, Inter } from "next/font/google";
 import "./globals.css";
 
@@ -18,6 +18,12 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "VerseAid",
   description: "An AI-assisted songwriting coach — not a ghostwriter.",
+};
+
+export const viewport: Viewport = {
+  // Required for env(safe-area-inset-*) to resolve on notched devices —
+  // used by the fixed audio player bar's bottom padding.
+  viewportFit: "cover",
 };
 
 export default function RootLayout({

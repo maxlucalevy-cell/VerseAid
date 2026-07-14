@@ -64,7 +64,12 @@ const AudioPlayerBar = forwardRef<
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 border-t border-border bg-bg-raised px-4 py-3 shadow-[0_1px_0_rgba(245,240,232,0.06)_inset,0_-4px_20px_rgba(0,0,0,0.35)] sm:px-6">
+    <div
+      className="fixed bottom-0 left-0 right-0 z-40 border-t border-border bg-bg-raised px-4 pt-3 shadow-[0_1px_0_rgba(245,240,232,0.06)_inset,0_-4px_20px_rgba(0,0,0,0.35)] sm:px-6"
+      style={{
+        paddingBottom: "calc(0.75rem + env(safe-area-inset-bottom, 0px))",
+      }}
+    >
       <audio
         ref={audioRef}
         src={src}
@@ -72,7 +77,7 @@ const AudioPlayerBar = forwardRef<
         onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
         onEnded={() => setIsPlaying(false)}
       />
-      <div className="mx-auto flex max-w-3xl items-center gap-3 text-sm">
+      <div className="mx-auto flex max-w-3xl flex-wrap items-center gap-x-3 gap-y-2 text-sm">
         <button
           onClick={() => skip(-5)}
           aria-label="Rewind 5 seconds"
@@ -108,7 +113,7 @@ const AudioPlayerBar = forwardRef<
             if (audioRef.current) audioRef.current.currentTime = t;
             setCurrentTime(t);
           }}
-          className="studio-range flex-1"
+          className="studio-range min-w-[120px] flex-1"
         />
         <span className="shrink-0 rounded-md border border-border bg-bg-inset px-2 py-1 font-mono text-xs tabular-nums text-text-faint">
           {formatTime(duration)}

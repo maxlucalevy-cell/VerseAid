@@ -309,7 +309,7 @@ export default function SongEditor({
 
   return (
     <main
-      className={`fade-in-section mx-auto max-w-3xl p-6 sm:p-8 ${audioPath ? "pb-28" : ""}`}
+      className={`fade-in-section mx-auto max-w-3xl p-6 sm:p-8 ${audioPath ? "pb-44 sm:pb-28" : ""}`}
     >
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <Link
