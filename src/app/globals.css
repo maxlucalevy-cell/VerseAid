@@ -72,3 +72,36 @@ body {
     animation: none;
   }
 }
+
+/* Themed range input — used by the audio scrubber and speed-adjacent
+   controls, evoking a tape-counter dial rather than a bare browser slider. */
+.studio-range {
+  appearance: none;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--color-border-strong);
+  outline: none;
+}
+.studio-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+.studio-range::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+.studio-range::-moz-range-track {
+  height: 4px;
+  border-radius: 999px;
+  background: var(--color-border-strong);
+}

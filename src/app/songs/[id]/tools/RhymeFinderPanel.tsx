@@ -38,27 +38,27 @@ export default function RhymeFinderPanel({
   };
 
   return (
-    <div className="rounded-lg bg-neutral-50 p-4 text-sm">
+    <div className="rounded-xl border border-border bg-bg-inset p-4 text-sm">
       <div className="mb-3 flex gap-2">
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && search()}
           placeholder="Word to rhyme..."
-          className="flex-1 rounded-md border border-neutral-300 px-3 py-1.5 text-sm outline-none"
+          className="flex-1 rounded-full border border-border-strong bg-bg px-3 py-1.5 text-sm text-text placeholder:text-text-faint outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/30"
         />
         <button
           onClick={search}
           disabled={loading}
-          className="rounded-md bg-neutral-900 px-3 py-1.5 text-sm font-medium text-white disabled:opacity-50"
+          className="rounded-full bg-accent px-4 py-1.5 text-sm font-medium text-bg shadow-[0_1px_0_rgba(245,240,232,0.35)_inset,0_2px_4px_rgba(0,0,0,0.3)] transition hover:bg-accent-hover active:translate-y-px disabled:opacity-50"
         >
           {loading ? "Searching..." : "Find Rhymes"}
         </button>
       </div>
-      {error && <p className="text-red-600">{error}</p>}
+      {error && <p className="text-danger">{error}</p>}
       {results &&
         (results.length === 0 ? (
-          <p className="text-neutral-500">
+          <p className="text-text-faint">
             No rhymes found for &quot;{query}&quot;.
           </p>
         ) : (
@@ -66,7 +66,7 @@ export default function RhymeFinderPanel({
             {results.map((word) => (
               <span
                 key={word}
-                className="rounded-full bg-white px-2.5 py-1 text-neutral-700 shadow-sm"
+                className="rounded-full border border-border bg-bg px-2.5 py-1 text-text-muted"
               >
                 {word}
               </span>

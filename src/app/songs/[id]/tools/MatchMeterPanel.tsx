@@ -23,13 +23,13 @@ export default function MatchMeterPanel({
   );
 
   return (
-    <div className="rounded-lg bg-neutral-50 p-4 text-sm">
+    <div className="rounded-xl border border-border bg-bg-inset p-4 text-sm">
       <div className="mb-3 flex items-center gap-2">
-        <span className="text-neutral-600">Match meter against:</span>
+        <span className="text-text-muted">Match meter against:</span>
         <select
           value={section.target_meter_ref ?? ""}
           onChange={(e) => onSetTargetRef(e.target.value || null)}
-          className="rounded-md border border-neutral-300 px-2 py-1 text-sm"
+          className="rounded-full border border-border-strong bg-bg px-2 py-1 text-sm text-text outline-none focus:border-accent"
         >
           <option value="">None</option>
           {otherSections.map((s) => (
@@ -41,7 +41,7 @@ export default function MatchMeterPanel({
       </div>
 
       {!target && (
-        <p className="text-neutral-500">
+        <p className="text-text-faint">
           Pick a section above to compare this section&apos;s syllable
           pattern line by line.
         </p>
@@ -57,10 +57,8 @@ export default function MatchMeterPanel({
             return (
               <div
                 key={i}
-                className={`flex items-center justify-between rounded px-2 py-1 ${
-                  diverges
-                    ? "bg-amber-50 text-amber-700"
-                    : "text-neutral-600"
+                className={`flex items-center justify-between rounded-lg px-2 py-1 ${
+                  diverges ? "bg-accent/15 text-accent" : "text-text-muted"
                 }`}
               >
                 <span className="truncate">{line}</span>

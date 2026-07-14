@@ -308,27 +308,36 @@ export default function SongEditor({
   };
 
   return (
-    <main className={`mx-auto max-w-3xl p-8 ${audioPath ? "pb-28" : ""}`}>
-      <div className="mb-6 flex items-center justify-between">
-        <Link href="/dashboard" className="text-sm text-neutral-500 underline">
+    <main
+      className={`fade-in-section mx-auto max-w-3xl p-6 sm:p-8 ${audioPath ? "pb-28" : ""}`}
+    >
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+        <Link
+          href="/dashboard"
+          className="text-sm text-text-muted underline decoration-border-strong underline-offset-2 transition hover:text-text"
+        >
           ← Back to Library
         </Link>
         <div className="flex items-center gap-3">
           <Link
             href={`/songs/${song.id}/read`}
-            className="rounded-full border border-neutral-300 px-4 py-1.5 text-sm"
+            className="rounded-full border border-border-strong bg-bg-raised px-4 py-1.5 text-sm text-text transition hover:border-accent hover:text-accent"
           >
             Read View
           </Link>
           <button
             onClick={handleStatusToggle}
-            className="rounded-full border border-neutral-300 px-4 py-1.5 text-sm capitalize"
+            className={`rounded-full px-4 py-1.5 text-sm font-medium capitalize transition ${
+              status === "finished"
+                ? "bg-accent text-bg shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
+                : "border border-border-strong bg-bg-inset text-text-muted shadow-inner hover:text-text"
+            }`}
           >
             {status}
           </button>
           <button
             onClick={handleDeleteSong}
-            className="text-sm text-neutral-400 hover:text-red-600"
+            className="text-sm text-text-faint transition hover:text-danger"
           >
             Delete Song
           </button>
@@ -338,12 +347,12 @@ export default function SongEditor({
       <input
         value={title}
         onChange={(e) => handleTitleChange(e.target.value)}
-        className="mb-8 w-full border-b border-neutral-200 pb-2 text-3xl font-semibold outline-none"
+        className="font-display mb-8 w-full border-b border-border-strong bg-transparent pb-2 text-3xl font-semibold text-text outline-none transition focus:border-accent"
       />
 
       {(song.inspiration_angle || song.inspiration_pov) && (
-        <div className="mb-8 rounded-lg bg-amber-50 p-4 text-sm text-amber-800">
-          <p className="mb-1 font-medium">Inspiration Starter</p>
+        <div className="paper-grain mb-8 rounded-2xl border border-border bg-bg-raised p-4 text-sm text-text-muted">
+          <p className="mb-1 font-medium text-accent">Inspiration Starter</p>
           {song.inspiration_angle && <p>Angle: {song.inspiration_angle}</p>}
           {song.inspiration_pov && <p>POV: {song.inspiration_pov}</p>}
         </div>
@@ -364,7 +373,7 @@ export default function SongEditor({
         {sections.map((section, index) => (
           <div
             key={section.id}
-            className="rounded-2xl border border-neutral-200 p-5"
+            className="paper-grain rounded-2xl border border-border bg-bg-raised p-5 shadow-[0_1px_0_rgba(245,240,232,0.04)_inset,0_4px_16px_rgba(0,0,0,0.25)]"
           >
             <div className="mb-3 flex items-center justify-between">
               <div className="flex items-center gap-3">
@@ -373,19 +382,19 @@ export default function SongEditor({
                   onChange={(e) =>
                     updateSectionField(section.id, "label", e.target.value)
                   }
-                  className="text-lg font-medium outline-none"
+                  className="font-display text-lg font-medium text-text outline-none"
                 />
                 {rhymeSchemes[section.id] && (
-                  <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-xs font-medium text-neutral-500">
+                  <span className="rounded-full border border-border-strong bg-bg-inset px-2 py-0.5 text-xs font-medium text-accent">
                     {rhymeSchemes[section.id]}
                   </span>
                 )}
               </div>
-              <div className="flex items-center gap-3 text-sm text-neutral-400">
+              <div className="flex items-center gap-3 text-sm text-text-faint">
                 <button
                   onClick={() => moveSection(index, -1)}
                   disabled={index === 0}
-                  className="disabled:opacity-30"
+                  className="transition hover:text-text disabled:opacity-30"
                   aria-label="Move section up"
                 >
                   ↑
@@ -393,24 +402,24 @@ export default function SongEditor({
                 <button
                   onClick={() => moveSection(index, 1)}
                   disabled={index === sections.length - 1}
-                  className="disabled:opacity-30"
+                  className="transition hover:text-text disabled:opacity-30"
                   aria-label="Move section down"
                 >
                   ↓
                 </button>
                 <button
                   onClick={() => deleteSection(section.id)}
-                  className="hover:text-red-600"
+                  className="transition hover:text-danger"
                 >
                   Remove
                 </button>
               </div>
             </div>
             {audioPath && (
-              <div className="mb-2 flex items-center gap-3 text-xs text-neutral-400">
+              <div className="mb-2 flex items-center gap-3 text-xs text-text-faint">
                 <button
                   onClick={() => handleMarkSectionStart(section.id)}
-                  className="hover:text-neutral-700"
+                  className="transition hover:text-text"
                 >
                   Mark start
                   {section.start_time != null
@@ -420,14 +429,14 @@ export default function SongEditor({
                 {section.start_time != null && (
                   <button
                     onClick={() => handlePlayFromSection(section.id)}
-                    className="text-neutral-600 hover:text-neutral-900"
+                    className="text-accent transition hover:text-accent-hover"
                   >
                     ▶ Play from here
                   </button>
                 )}
               </div>
             )}
-            <div className="mb-3 flex gap-3 rounded-lg border border-neutral-200 p-3">
+            <div className="mb-3 flex gap-3 rounded-xl border border-border-strong bg-bg-inset p-3">
               <textarea
                 value={section.content}
                 onChange={(e) =>
@@ -437,9 +446,9 @@ export default function SongEditor({
                 rows={Math.max(4, section.content.split("\n").length)}
                 wrap="off"
                 placeholder="Write your lyrics..."
-                className="flex-1 resize-none overflow-x-auto font-mono text-sm leading-6 outline-none"
+                className="flex-1 resize-none overflow-x-auto bg-transparent font-mono text-sm leading-6 text-text outline-none placeholder:text-text-faint"
               />
-              <div className="flex flex-col items-end text-xs leading-6 text-neutral-400 select-none">
+              <div className="flex flex-col items-end text-xs leading-6 text-text-faint select-none">
                 {section.content.split("\n").map((line, i) => (
                   <div key={i}>{line.trim() ? countLineSyllables(line) : ""}</div>
                 ))}
@@ -451,10 +460,10 @@ export default function SongEditor({
                 <button
                   key={tool.name}
                   onClick={() => toggleTool(section.id, tool.name)}
-                  className={`rounded-full px-3 py-1 text-xs font-medium ${
+                  className={`rounded-full px-3 py-1 text-xs font-medium transition ${
                     activeTool[section.id] === tool.name
-                      ? "bg-neutral-900 text-white"
-                      : "bg-neutral-100 text-neutral-600"
+                      ? "bg-accent text-bg shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
+                      : "border border-border bg-bg-inset text-text-muted shadow-inner hover:border-border-strong hover:text-text"
                   }`}
                 >
                   {tool.label}
@@ -501,7 +510,7 @@ export default function SongEditor({
 
       <button
         onClick={addSection}
-        className="mt-6 rounded-full border border-dashed border-neutral-300 px-5 py-2.5 text-sm font-medium text-neutral-600 hover:border-neutral-400"
+        className="mt-6 rounded-full border border-dashed border-border-strong px-5 py-2.5 text-sm font-medium text-text-muted transition hover:border-accent hover:text-accent"
       >
         + Add Section
       </button>

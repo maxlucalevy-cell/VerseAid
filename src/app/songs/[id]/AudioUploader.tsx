@@ -51,8 +51,8 @@ export default function AudioUploader({
   };
 
   return (
-    <div className="mb-8 rounded-lg border border-dashed border-neutral-300 p-4 text-sm">
-      <label className="flex cursor-pointer items-center gap-3 text-neutral-600">
+    <div className="mb-6 rounded-xl border border-dashed border-border-strong bg-bg-inset p-4 text-sm">
+      <label className="flex cursor-pointer items-center gap-3 text-text-muted">
         <input
           type="file"
           accept="audio/*"
@@ -60,14 +60,14 @@ export default function AudioUploader({
           disabled={uploading}
           className="hidden"
         />
-        <span className="rounded-full bg-neutral-900 px-4 py-2 font-medium text-white">
+        <span className="rounded-full bg-accent px-4 py-2 font-medium text-bg shadow-[0_1px_0_rgba(245,240,232,0.35)_inset,0_2px_4px_rgba(0,0,0,0.3)] transition hover:bg-accent-hover active:translate-y-px">
           {uploading ? "Uploading..." : "Upload Reference Audio"}
         </span>
-        <span className="text-neutral-400">
+        <span className="text-text-faint">
           Optional — one audio file per song
         </span>
       </label>
-      {error && <p className="mt-2 text-red-600">{error}</p>}
+      {error && <p className="mt-2 text-danger">{error}</p>}
     </div>
   );
 }

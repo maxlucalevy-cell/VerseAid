@@ -29,7 +29,7 @@ export default function RevisionHistoryPanel({
 
   if (loading) {
     return (
-      <div className="rounded-lg bg-neutral-50 p-4 text-sm text-neutral-500">
+      <div className="rounded-xl border border-border bg-bg-inset p-4 text-sm text-text-muted">
         Loading revision history...
       </div>
     );
@@ -37,7 +37,7 @@ export default function RevisionHistoryPanel({
 
   if (!revisions || revisions.length === 0) {
     return (
-      <div className="rounded-lg bg-neutral-50 p-4 text-sm text-neutral-500">
+      <div className="rounded-xl border border-border bg-bg-inset p-4 text-sm text-text-muted">
         No saved revisions yet. A snapshot is kept each time you step away
         from editing this section.
       </div>
@@ -45,24 +45,24 @@ export default function RevisionHistoryPanel({
   }
 
   return (
-    <div className="rounded-lg bg-neutral-50 p-4 text-sm">
+    <div className="rounded-xl border border-border bg-bg-inset p-4 text-sm">
       <div className="flex flex-col gap-2">
         {revisions.map((rev) => (
           <div
             key={rev.id}
-            className="flex items-center justify-between gap-3 rounded-md bg-white px-3 py-2 shadow-sm"
+            className="flex items-center justify-between gap-3 rounded-lg border border-border bg-bg px-3 py-2"
           >
             <div className="min-w-0 flex-1">
-              <p className="text-xs text-neutral-400">
+              <p className="text-xs text-text-faint">
                 {new Date(rev.saved_at).toLocaleString()}
               </p>
-              <p className="truncate text-neutral-600">
+              <p className="truncate text-text-muted">
                 {rev.content_snapshot.replace(/\n/g, " / ") || "(empty)"}
               </p>
             </div>
             <button
               onClick={() => onRestore(rev.content_snapshot)}
-              className="shrink-0 text-xs font-medium text-neutral-500 hover:text-neutral-900"
+              className="shrink-0 text-xs font-medium text-accent transition hover:text-accent-hover"
             >
               Restore
             </button>

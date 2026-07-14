@@ -56,19 +56,19 @@ export default function MetronomePanel({
   };
 
   return (
-    <div className="mb-8 rounded-lg border border-neutral-200 p-4 text-sm">
-      <p className="mb-3 text-neutral-500">
+    <div className="mb-6 rounded-xl border border-border bg-bg-raised p-4 text-sm">
+      <p className="mb-3 text-text-muted">
         No audio uploaded — use tap tempo or enter a BPM manually.
       </p>
-      <div className="flex flex-wrap items-center gap-3">
+      <div className="flex flex-wrap items-center gap-4">
         <button
           onClick={handleTap}
-          className="rounded-full bg-neutral-900 px-4 py-2 font-medium text-white"
+          className="rounded-full bg-accent px-5 py-2.5 font-medium text-bg shadow-[0_1px_0_rgba(245,240,232,0.35)_inset,0_2px_6px_rgba(0,0,0,0.35)] transition hover:bg-accent-hover active:translate-y-px active:shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
         >
           Tap Tempo
         </button>
         <label className="flex items-center gap-2">
-          <span className="text-neutral-500">BPM</span>
+          <span className="text-text-muted">BPM</span>
           <input
             type="number"
             min={20}
@@ -78,13 +78,15 @@ export default function MetronomePanel({
               const value = Number(e.target.value);
               if (!Number.isNaN(value)) onBpmChange(value);
             }}
-            className="w-20 rounded-md border border-neutral-300 px-2 py-1"
+            className="w-20 rounded-md border border-border-strong bg-bg-inset px-2 py-1.5 text-center font-mono text-accent tabular-nums outline-none focus:border-accent"
           />
         </label>
         <button
           onClick={() => setIsPlaying((p) => !p)}
-          className={`rounded-full px-4 py-2 font-medium ${
-            isPlaying ? "bg-red-600 text-white" : "bg-neutral-100 text-neutral-700"
+          className={`rounded-full px-4 py-2 font-medium transition ${
+            isPlaying
+              ? "bg-danger text-bg shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
+              : "border border-border-strong bg-bg-inset text-text-muted shadow-inner hover:text-text"
           }`}
         >
           {isPlaying ? "Stop" : "Start"} Metronome
