@@ -20,7 +20,13 @@
       "Bash(curl -s \"http://localhost:3000/api/rhymes?word=flame\")",
       "Bash(python3 -m json.tool)",
       "Bash(curl -s \"http://localhost:3000/api/rhymes?word=way\")",
-      "Bash(python3 -c ' *)"
+      "Bash(python3 -c ' *)",
+      "mcp__claude-in-chrome__list_connected_browsers",
+      "mcp__claude-in-chrome__tabs_context_mcp",
+      "mcp__claude-in-chrome__navigate",
+      "mcp__claude-in-chrome__get_page_text",
+      "mcp__claude-in-chrome__find",
+      "mcp__claude-in-chrome__computer"
     ]
   }
 }
