@@ -54,7 +54,13 @@
       "Bash(xargs -r ps -p)",
       "Bash(ps -p 92336 -o pid,ppid,command)",
       "Bash(kill 92336)",
-      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/privacy --max-time 2)"
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/privacy --max-time 2)",
+      "Bash(git remote *)",
+      "Bash(git push *)",
+      "Bash(gh auth *)",
+      "Read(//Users/maxlevy/**)",
+      "Bash(git config *)",
+      "Bash(git fetch *)"
     ]
   }
 }
