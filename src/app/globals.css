@@ -105,3 +105,20 @@ body {
   border-radius: 999px;
   background: var(--color-border-strong);
 }
+
+/* Read View's printed/PDF output stays a normal black-on-white document —
+   ink-friendly and readable as a printout, unlike the app's dark theme. */
+@media print {
+  body {
+    background: #fff !important;
+  }
+  .read-view-print {
+    color: #1a1612 !important;
+  }
+  .read-view-print h2 {
+    color: #6b6259 !important;
+  }
+  .read-view-print .section-empty {
+    color: #8a8177 !important;
+  }
+}
