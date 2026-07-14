@@ -51,20 +51,22 @@ export default function ReorderExercise({
 
   return (
     <div>
-      <p className="mb-4 text-lg font-medium">{exercise.prompt}</p>
+      <p className="font-display mb-4 text-lg font-medium text-text">
+        {exercise.prompt}
+      </p>
       <div className="flex flex-col gap-2">
         {items.map((item, index) => (
           <div
             key={item.id}
-            className="flex items-center justify-between rounded-lg border border-neutral-200 p-3 text-sm"
+            className="flex items-center justify-between rounded-xl border border-border bg-bg-raised p-3 text-sm text-text"
           >
             <span>{item.text}</span>
             {!submitted && (
-              <div className="flex gap-2 text-neutral-400">
+              <div className="flex gap-2 text-text-faint">
                 <button
                   onClick={() => move(index, -1)}
                   disabled={index === 0}
-                  className="disabled:opacity-30"
+                  className="transition hover:text-text disabled:opacity-30"
                   aria-label="Move up"
                 >
                   ↑
@@ -72,7 +74,7 @@ export default function ReorderExercise({
                 <button
                   onClick={() => move(index, 1)}
                   disabled={index === items.length - 1}
-                  className="disabled:opacity-30"
+                  className="transition hover:text-text disabled:opacity-30"
                   aria-label="Move down"
                 >
                   ↓
@@ -85,12 +87,12 @@ export default function ReorderExercise({
       {!submitted ? (
         <button
           onClick={handleSubmit}
-          className="mt-3 rounded-full bg-neutral-900 px-4 py-2 text-sm font-medium text-white"
+          className="mt-3 rounded-full bg-accent px-4 py-2 text-sm font-medium text-bg shadow-[0_1px_0_rgba(245,240,232,0.35)_inset,0_2px_4px_rgba(0,0,0,0.3)] transition hover:bg-accent-hover active:translate-y-px"
         >
           Check Order
         </button>
       ) : (
-        <div className="mt-3 rounded-lg bg-neutral-50 p-4 text-sm text-neutral-600">
+        <div className="mt-3 rounded-xl border border-border bg-bg-inset p-4 text-sm text-text-muted">
           <p>{exercise.is_mechanical && !isMatch ? feedback.mismatch : feedback.match}</p>
         </div>
       )}

@@ -60,11 +60,12 @@ export default function LessonRunner({
 
   if (exercises.length === 0) {
     return (
-      <main className="mx-auto max-w-2xl p-8 text-center">
-        <p className="text-neutral-500">
-          No exercises yet for {lesson.title}.
-        </p>
-        <Link href="/lessons" className="mt-4 inline-block underline">
+      <main className="fade-in-section mx-auto max-w-2xl p-8 text-center">
+        <p className="text-text-muted">No exercises yet for {lesson.title}.</p>
+        <Link
+          href="/lessons"
+          className="mt-4 inline-block text-accent underline underline-offset-2 hover:text-accent-hover"
+        >
           Back to Topics
         </Link>
       </main>
@@ -73,9 +74,11 @@ export default function LessonRunner({
 
   if (currentIndex >= exercises.length) {
     return (
-      <main className="mx-auto max-w-2xl p-8 text-center">
-        <h1 className="mb-2 text-2xl font-semibold">Topic complete!</h1>
-        <p className="mb-6 text-neutral-500">
+      <main className="fade-in-section mx-auto max-w-2xl p-8 text-center">
+        <h1 className="font-display mb-2 text-2xl font-semibold text-text">
+          Topic complete!
+        </h1>
+        <p className="mb-6 text-text-muted">
           You&apos;ve been through every exercise in {lesson.title}.
         </p>
         <div className="flex justify-center gap-4">
@@ -84,13 +87,13 @@ export default function LessonRunner({
               setCurrentIndex(0);
               setAnswered(false);
             }}
-            className="rounded-full bg-neutral-900 px-5 py-2.5 text-sm font-medium text-white"
+            className="rounded-full bg-accent px-5 py-2.5 text-sm font-medium text-bg shadow-[0_1px_0_rgba(245,240,232,0.35)_inset,0_2px_6px_rgba(0,0,0,0.35)] transition hover:bg-accent-hover active:translate-y-px"
           >
             Review from the start
           </button>
           <Link
             href="/lessons"
-            className="rounded-full border border-neutral-300 px-5 py-2.5 text-sm font-medium"
+            className="rounded-full border border-border-strong bg-bg-raised px-5 py-2.5 text-sm font-medium text-text transition hover:border-accent hover:text-accent"
           >
             Back to Topics
           </Link>
@@ -100,9 +103,12 @@ export default function LessonRunner({
   }
 
   return (
-    <main className="mx-auto max-w-2xl p-8">
-      <div className="mb-6 flex items-center justify-between text-sm text-neutral-500">
-        <Link href="/lessons" className="underline">
+    <main className="fade-in-section mx-auto max-w-2xl p-6 sm:p-8">
+      <div className="mb-6 flex items-center justify-between text-sm text-text-muted">
+        <Link
+          href="/lessons"
+          className="underline decoration-border-strong underline-offset-2 hover:text-text"
+        >
           ← Topics
         </Link>
         <span>
@@ -127,7 +133,7 @@ export default function LessonRunner({
       {answered && (
         <button
           onClick={handleNext}
-          className="mt-6 rounded-full bg-neutral-900 px-5 py-2.5 text-sm font-medium text-white"
+          className="mt-6 rounded-full bg-accent px-5 py-2.5 text-sm font-medium text-bg shadow-[0_1px_0_rgba(245,240,232,0.35)_inset,0_2px_6px_rgba(0,0,0,0.35)] transition hover:bg-accent-hover active:translate-y-px"
         >
           {currentIndex + 1 < exercises.length ? "Next Exercise" : "Finish Topic"}
         </button>

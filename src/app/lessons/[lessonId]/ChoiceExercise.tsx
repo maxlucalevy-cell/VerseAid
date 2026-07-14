@@ -25,7 +25,9 @@ export default function ChoiceExercise({
 
   return (
     <div>
-      <p className="mb-4 text-lg font-medium">{exercise.prompt}</p>
+      <p className="font-display mb-4 text-lg font-medium text-text">
+        {exercise.prompt}
+      </p>
       <div className="flex flex-col gap-2">
         {options.map((option) => {
           const isSelected = selectedId === option.id;
@@ -37,18 +39,22 @@ export default function ChoiceExercise({
               key={option.id}
               onClick={() => handleSelect(option.id)}
               disabled={selectedId !== null}
-              className={`rounded-lg border p-3 text-left text-sm transition-colors ${
+              className={`rounded-xl border p-3 text-left text-sm transition ${
                 isSelected
-                  ? "border-neutral-900 bg-neutral-50"
-                  : "border-neutral-200"
-              } ${selectedId !== null && !isSelected ? "opacity-60" : ""}`}
+                  ? "border-accent bg-bg-inset"
+                  : "border-border bg-bg-raised"
+              } ${selectedId !== null && !isSelected ? "opacity-50" : ""}`}
             >
               <div className="flex items-center justify-between gap-3">
-                <span>{option.text}</span>
-                {showIcon && <span>{isCorrect ? "✓" : "⚠"}</span>}
+                <span className="text-text">{option.text}</span>
+                {showIcon && (
+                  <span className={isCorrect ? "text-accent" : "text-danger"}>
+                    {isCorrect ? "✓" : "⚠"}
+                  </span>
+                )}
               </div>
               {isSelected && feedback[option.id] && (
-                <p className="mt-2 text-neutral-600">{feedback[option.id]}</p>
+                <p className="mt-2 text-text-muted">{feedback[option.id]}</p>
               )}
             </button>
           );
