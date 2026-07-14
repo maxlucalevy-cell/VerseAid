@@ -7,6 +7,21 @@ import { deleteSong } from "@/app/songs/actions";
 import { countLineSyllables } from "@/lib/syllables";
 import { computeRhymeScheme } from "@/lib/rhyme";
 import type { Song, Section, SongStatus } from "@/lib/types";
+import WritingTipPanel from "./tools/WritingTipPanel";
+import RhymeFinderPanel from "./tools/RhymeFinderPanel";
+import LineSparksPanel from "./tools/LineSparksPanel";
+import MatchMeterPanel from "./tools/MatchMeterPanel";
+import RevisionHistoryPanel from "./tools/RevisionHistoryPanel";
+
+type ToolName = "tip" | "rhyme" | "sparks" | "meter" | "history";
+
+const TOOLS: { name: ToolName; label: string }[] = [
+  { name: "tip", label: "Writing Tip" },
+  { name: "rhyme", label: "Rhyme Finder" },
+  { name: "sparks", label: "Line Sparks" },
+  { name: "meter", label: "Match Meter" },
+  { name: "history", label: "Revision History" },
+];
 
 function useDebounce(delay = 600) {
   const timers = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map());
@@ -30,11 +45,15 @@ export default function SongEditor({
 }) {
   const supabase = createClient();
   const debounce = useDebounce();
+  const lastSnapshotContent = useRef<Record<string, string>>({});
 
   const [title, setTitle] = useState(song.title);
   const [status, setStatus] = useState<SongStatus>(song.status);
   const [sections, setSections] = useState(initialSections);
   const [rhymeSchemes, setRhymeSchemes] = useState<Record<string, string>>({});
+  const [activeTool, setActiveTool] = useState<Record<string, ToolName | undefined>>(
+    {}
+  );
 
   const recomputeRhymeScheme = useCallback((sectionId: string, content: string) => {
     computeRhymeScheme(content.split("\n")).then((scheme) => {
@@ -43,7 +62,10 @@ export default function SongEditor({
   }, []);
 
   useEffect(() => {
-    initialSections.forEach((s) => recomputeRhymeScheme(s.id, s.content));
+    initialSections.forEach((s) => {
+      recomputeRhymeScheme(s.id, s.content);
+      lastSnapshotContent.current[s.id] = s.content;
+    });
     // Only run once on mount; later changes are handled by updateSectionField.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -107,11 +129,13 @@ export default function SongEditor({
 
     if (!error && data) {
       setSections((prev) => [...prev, data]);
+      lastSnapshotContent.current[data.id] = data.content;
     }
   };
 
   const deleteSection = async (id: string) => {
     setSections((prev) => prev.filter((s) => s.id !== id));
+    delete lastSnapshotContent.current[id];
     await supabase.from("sections").delete().eq("id", id);
   };
 
@@ -139,6 +163,71 @@ export default function SongEditor({
         .update({ order_index: updatedTarget.order_index })
         .eq("id", updatedTarget.id),
     ]);
+  };
+
+  const toggleTool = (sectionId: string, tool: ToolName) => {
+    setActiveTool((prev) => ({
+      ...prev,
+      [sectionId]: prev[sectionId] === tool ? undefined : tool,
+    }));
+  };
+
+  const handleContentBlur = async (sectionId: string, content: string) => {
+    if (lastSnapshotContent.current[sectionId] === content) return;
+    lastSnapshotContent.current[sectionId] = content;
+
+    await supabase
+      .from("section_revisions")
+      .insert({ section_id: sectionId, content_snapshot: content });
+
+    const { data: revisions } = await supabase
+      .from("section_revisions")
+      .select("id")
+      .eq("section_id", sectionId)
+      .order("saved_at", { ascending: false });
+
+    if (revisions && revisions.length > 20) {
+      const idsToDelete = revisions.slice(20).map((r) => r.id);
+      await supabase.from("section_revisions").delete().in("id", idsToDelete);
+    }
+  };
+
+  const handleRestoreRevision = async (sectionId: string, content: string) => {
+    const section = sections.find((s) => s.id === sectionId);
+    if (section && section.content !== content) {
+      await supabase.from("section_revisions").insert({
+        section_id: sectionId,
+        content_snapshot: section.content,
+      });
+    }
+    setSections((prev) =>
+      prev.map((s) => (s.id === sectionId ? { ...s, content } : s))
+    );
+    lastSnapshotContent.current[sectionId] = content;
+    await supabase.from("sections").update({ content }).eq("id", sectionId);
+    recomputeRhymeScheme(sectionId, content);
+  };
+
+  const handleSetTargetMeterRef = async (
+    sectionId: string,
+    targetId: string | null
+  ) => {
+    setSections((prev) =>
+      prev.map((s) =>
+        s.id === sectionId ? { ...s, target_meter_ref: targetId } : s
+      )
+    );
+    await supabase
+      .from("sections")
+      .update({ target_meter_ref: targetId })
+      .eq("id", sectionId);
+  };
+
+  const handleInsertLine = (sectionId: string, line: string) => {
+    const section = sections.find((s) => s.id === sectionId);
+    if (!section) return;
+    const newContent = section.content ? `${section.content}\n${line}` : line;
+    updateSectionField(sectionId, "content", newContent);
   };
 
   return (
@@ -215,12 +304,13 @@ export default function SongEditor({
                 </button>
               </div>
             </div>
-            <div className="flex gap-3 rounded-lg border border-neutral-200 p-3">
+            <div className="mb-3 flex gap-3 rounded-lg border border-neutral-200 p-3">
               <textarea
                 value={section.content}
                 onChange={(e) =>
                   updateSectionField(section.id, "content", e.target.value)
                 }
+                onBlur={(e) => handleContentBlur(section.id, e.target.value)}
                 rows={Math.max(4, section.content.split("\n").length)}
                 wrap="off"
                 placeholder="Write your lyrics..."
@@ -232,6 +322,52 @@ export default function SongEditor({
                 ))}
               </div>
             </div>
+
+            <div className="mb-3 flex flex-wrap gap-2">
+              {TOOLS.map((tool) => (
+                <button
+                  key={tool.name}
+                  onClick={() => toggleTool(section.id, tool.name)}
+                  className={`rounded-full px-3 py-1 text-xs font-medium ${
+                    activeTool[section.id] === tool.name
+                      ? "bg-neutral-900 text-white"
+                      : "bg-neutral-100 text-neutral-600"
+                  }`}
+                >
+                  {tool.label}
+                </button>
+              ))}
+            </div>
+
+            {activeTool[section.id] === "tip" && (
+              <WritingTipPanel label={section.label} />
+            )}
+            {activeTool[section.id] === "rhyme" && (
+              <RhymeFinderPanel sectionContent={section.content} />
+            )}
+            {activeTool[section.id] === "sparks" && (
+              <LineSparksPanel
+                sectionContent={section.content}
+                onInsertLine={(line) => handleInsertLine(section.id, line)}
+              />
+            )}
+            {activeTool[section.id] === "meter" && (
+              <MatchMeterPanel
+                section={section}
+                allSections={sections}
+                onSetTargetRef={(targetId) =>
+                  handleSetTargetMeterRef(section.id, targetId)
+                }
+              />
+            )}
+            {activeTool[section.id] === "history" && (
+              <RevisionHistoryPanel
+                sectionId={section.id}
+                onRestore={(content) =>
+                  handleRestoreRevision(section.id, content)
+                }
+              />
+            )}
           </div>
         ))}
       </div>

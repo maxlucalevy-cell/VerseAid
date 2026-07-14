@@ -25,3 +25,10 @@ export type Section = {
   start_time: number | null;
   created_at: string;
 };
+
+export type SectionRevision = {
+  id: string;
+  section_id: string;
+  content_snapshot: string;
+  saved_at: string;
+};
