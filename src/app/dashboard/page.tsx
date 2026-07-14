@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { signOut } from "@/app/auth/actions";
 import { redirect } from "next/navigation";
+import SongLibrary from "./SongLibrary";
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -12,18 +13,25 @@ export default async function DashboardPage() {
     redirect("/login");
   }
 
+  const { data: songs } = await supabase
+    .from("songs")
+    .select("*")
+    .order("last_edited_at", { ascending: false });
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-4 p-8 text-center">
-      <h1 className="text-2xl font-semibold">Song Library</h1>
-      <p className="text-neutral-500">Signed in as {user.email}</p>
-      <form action={signOut}>
-        <button
-          type="submit"
-          className="rounded-full border border-neutral-300 px-6 py-3 font-medium hover:bg-neutral-50"
-        >
-          Sign out
-        </button>
-      </form>
+    <main className="mx-auto max-w-3xl p-8">
+      <div className="mb-8 flex items-center justify-between">
+        <h1 className="text-2xl font-semibold">Song Library</h1>
+        <form action={signOut}>
+          <button
+            type="submit"
+            className="text-sm text-neutral-500 underline"
+          >
+            Sign out
+          </button>
+        </form>
+      </div>
+      <SongLibrary initialSongs={songs ?? []} />
     </main>
   );
 }
