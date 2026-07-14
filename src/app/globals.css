@@ -1,7 +1,9 @@
 @import "tailwindcss";
 
-:root {
-  /* Studio palette — warm, dark, single committed theme (not light/dark adaptive) */
+/* Studio palette — warm, dark, single committed theme (not light/dark
+   adaptive). Defined directly as theme tokens so Tailwind generates the
+   matching bg-, text-, and border- utilities. */
+@theme {
   --color-bg: #1a1612;
   --color-bg-raised: #241e18;
   --color-bg-inset: #15110d;
@@ -14,26 +16,13 @@
   --color-border: #362e27;
   --color-border-strong: #756655;
   --color-danger: #e0776b;
-
-  --font-display: var(--font-fraunces);
-  --font-body: var(--font-inter);
 }
 
+/* next/font sets --font-fraunces / --font-inter on <html>; map them to the
+   theme's font tokens with @theme inline since they're runtime values. */
 @theme inline {
-  --color-bg: var(--color-bg);
-  --color-bg-raised: var(--color-bg-raised);
-  --color-bg-inset: var(--color-bg-inset);
-  --color-accent: var(--color-accent);
-  --color-accent-hover: var(--color-accent-hover);
-  --color-accent-active: var(--color-accent-active);
-  --color-text: var(--color-text);
-  --color-text-muted: var(--color-text-muted);
-  --color-text-faint: var(--color-text-faint);
-  --color-border: var(--color-border);
-  --color-border-strong: var(--color-border-strong);
-  --color-danger: var(--color-danger);
-  --font-display: var(--font-display);
-  --font-body: var(--font-body);
+  --font-display: var(--font-fraunces);
+  --font-body: var(--font-inter);
 }
 
 body {

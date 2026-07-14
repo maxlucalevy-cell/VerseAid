@@ -39,7 +39,11 @@
       "Bash(pip3 install *)",
       "Skill(artifact-design)",
       "Skill(artifact-design:*)",
-      "Bash(rm -f /Users/maxlevy/Documents/nib_offwhite_transparent.png /Users/maxlevy/Documents/nib_amber_transparent.png /Users/maxlevy/Documents/*.b64.txt /Users/maxlevy/Documents/VerseAid/public/apple-icon-src.png *)"
+      "Bash(rm -f /Users/maxlevy/Documents/nib_offwhite_transparent.png /Users/maxlevy/Documents/nib_amber_transparent.png /Users/maxlevy/Documents/*.b64.txt /Users/maxlevy/Documents/VerseAid/public/apple-icon-src.png *)",
+      "Bash(pkill -f \"next dev\")",
+      "Bash(kill -9 89733 89734)",
+      "Bash(md5 /Users/maxlevy/Documents/VerseAid/src/app/globals.css)",
+      "Bash(xargs -r kill -9)"
     ]
   }
 }
