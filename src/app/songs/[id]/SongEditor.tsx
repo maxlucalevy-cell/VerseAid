@@ -335,6 +335,14 @@ export default function SongEditor({
         className="mb-8 w-full border-b border-neutral-200 pb-2 text-3xl font-semibold outline-none"
       />
 
+      {(song.inspiration_angle || song.inspiration_pov) && (
+        <div className="mb-8 rounded-lg bg-amber-50 p-4 text-sm text-amber-800">
+          <p className="mb-1 font-medium">Inspiration Starter</p>
+          {song.inspiration_angle && <p>Angle: {song.inspiration_angle}</p>}
+          {song.inspiration_pov && <p>POV: {song.inspiration_pov}</p>}
+        </div>
+      )}
+
       {!audioPath && (
         <>
           <AudioUploader

@@ -36,6 +36,12 @@ export default function SongLibrary({
         >
           New Song
         </Link>
+        <Link
+          href="/songs/inspiration"
+          className="text-sm text-neutral-500 underline hover:text-neutral-700"
+        >
+          Inspiration Starter
+        </Link>
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
