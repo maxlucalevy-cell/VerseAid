@@ -1,6 +1,7 @@
 "use client";
 
 import { createClient } from "@/lib/supabase/client";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 
@@ -47,6 +48,17 @@ export default function LoginPage() {
       <Suspense fallback={null}>
         <GoogleSignInButton />
       </Suspense>
+      <nav className="flex gap-4 text-xs text-text-faint">
+        <Link href="/privacy" className="transition hover:text-text-muted">
+          Privacy
+        </Link>
+        <Link href="/terms" className="transition hover:text-text-muted">
+          Terms
+        </Link>
+        <Link href="/support" className="transition hover:text-text-muted">
+          Support
+        </Link>
+      </nav>
     </main>
   );
 }

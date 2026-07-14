@@ -108,6 +108,47 @@ body {
   background: var(--color-border-strong);
 }
 
+/* Long-form legal/support copy (Privacy, Terms, Support) — plain semantic
+   markup in the page files, styled here so those files stay readable prose
+   rather than utility-class soup. */
+.legal-content h2 {
+  font-family: var(--font-display);
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+.legal-content h2:first-child {
+  margin-top: 0;
+}
+.legal-content p {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
+.legal-content ul {
+  margin-bottom: 1rem;
+  padding-left: 1.25rem;
+  list-style: disc;
+  color: var(--color-text-muted);
+}
+.legal-content li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+.legal-content strong {
+  font-weight: 600;
+  color: var(--color-text);
+}
+.legal-content a {
+  color: var(--color-accent);
+  text-underline-offset: 2px;
+}
+.legal-content a:hover {
+  color: var(--color-accent-hover);
+}
+
 /* Read View's printed/PDF output stays a normal black-on-white document —
    ink-friendly and readable as a printout, unlike the app's dark theme. */
 @media print {
