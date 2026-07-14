@@ -46,7 +46,15 @@
       "Bash(xargs -r kill -9)",
       "mcp__claude-in-chrome__resize_window",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/dashboard)",
-      "mcp__claude-in-chrome__read_network_requests"
+      "mcp__claude-in-chrome__read_network_requests",
+      "Bash(curl -s http://localhost:3000/privacy)",
+      "Read(//tmp/**)",
+      "Bash(curl -s \"http://localhost:3000/_next/static/chunks/%5Broot-of-the-server%5D__1m-5zm2._.css\" -o /tmp/bundle.css)",
+      "Bash(curl -s \"http://localhost:3000/_next/static/chunks/%5Broot-of-the-server%5D__1m-5zm2._.css\" -o /tmp/bundle2.css)",
+      "Bash(xargs -r ps -p)",
+      "Bash(ps -p 92336 -o pid,ppid,command)",
+      "Bash(kill 92336)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/privacy --max-time 2)"
     ]
   }
 }
