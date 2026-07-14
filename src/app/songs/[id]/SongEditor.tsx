@@ -1,9 +1,11 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { deleteSong } from "@/app/songs/actions";
+import { countLineSyllables } from "@/lib/syllables";
+import { computeRhymeScheme } from "@/lib/rhyme";
 import type { Song, Section, SongStatus } from "@/lib/types";
 
 function useDebounce(delay = 600) {
@@ -32,6 +34,19 @@ export default function SongEditor({
   const [title, setTitle] = useState(song.title);
   const [status, setStatus] = useState<SongStatus>(song.status);
   const [sections, setSections] = useState(initialSections);
+  const [rhymeSchemes, setRhymeSchemes] = useState<Record<string, string>>({});
+
+  const recomputeRhymeScheme = useCallback((sectionId: string, content: string) => {
+    computeRhymeScheme(content.split("\n")).then((scheme) => {
+      setRhymeSchemes((prev) => ({ ...prev, [sectionId]: scheme }));
+    });
+  }, []);
+
+  useEffect(() => {
+    initialSections.forEach((s) => recomputeRhymeScheme(s.id, s.content));
+    // Only run once on mount; later changes are handled by updateSectionField.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleTitleChange = (value: string) => {
     setTitle(value);
@@ -69,6 +84,9 @@ export default function SongEditor({
     debounce(`section-${field}-${id}`, () => {
       supabase.from("sections").update({ [field]: value }).eq("id", id).then();
     });
+    if (field === "content") {
+      debounce(`rhyme-${id}`, () => recomputeRhymeScheme(id, value));
+    }
   };
 
   const addSection = async () => {
@@ -158,13 +176,20 @@ export default function SongEditor({
             className="rounded-2xl border border-neutral-200 p-5"
           >
             <div className="mb-3 flex items-center justify-between">
-              <input
-                value={section.label}
-                onChange={(e) =>
-                  updateSectionField(section.id, "label", e.target.value)
-                }
-                className="text-lg font-medium outline-none"
-              />
+              <div className="flex items-center gap-3">
+                <input
+                  value={section.label}
+                  onChange={(e) =>
+                    updateSectionField(section.id, "label", e.target.value)
+                  }
+                  className="text-lg font-medium outline-none"
+                />
+                {rhymeSchemes[section.id] && (
+                  <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-xs font-medium text-neutral-500">
+                    {rhymeSchemes[section.id]}
+                  </span>
+                )}
+              </div>
               <div className="flex items-center gap-3 text-sm text-neutral-400">
                 <button
                   onClick={() => moveSection(index, -1)}
@@ -190,15 +215,23 @@ export default function SongEditor({
                 </button>
               </div>
             </div>
-            <textarea
-              value={section.content}
-              onChange={(e) =>
-                updateSectionField(section.id, "content", e.target.value)
-              }
-              rows={6}
-              placeholder="Write your lyrics..."
-              className="w-full resize-none rounded-lg border border-neutral-200 p-3 font-mono text-sm outline-none"
-            />
+            <div className="flex gap-3 rounded-lg border border-neutral-200 p-3">
+              <textarea
+                value={section.content}
+                onChange={(e) =>
+                  updateSectionField(section.id, "content", e.target.value)
+                }
+                rows={Math.max(4, section.content.split("\n").length)}
+                wrap="off"
+                placeholder="Write your lyrics..."
+                className="flex-1 resize-none overflow-x-auto font-mono text-sm leading-6 outline-none"
+              />
+              <div className="flex flex-col items-end text-xs leading-6 text-neutral-400 select-none">
+                {section.content.split("\n").map((line, i) => (
+                  <div key={i}>{line.trim() ? countLineSyllables(line) : ""}</div>
+                ))}
+              </div>
+            </div>
           </div>
         ))}
       </div>
