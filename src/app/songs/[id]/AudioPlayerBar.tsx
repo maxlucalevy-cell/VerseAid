@@ -7,6 +7,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { FastForward, Pause, Play, Rewind } from "lucide-react";
 import { formatTime } from "@/lib/time";
 
 export type AudioPlayerHandle = {
@@ -80,24 +81,30 @@ const AudioPlayerBar = forwardRef<
       <div className="mx-auto flex max-w-3xl flex-wrap items-center gap-x-3 gap-y-2 text-sm">
         <button
           onClick={() => skip(-5)}
+          disabled={!duration}
           aria-label="Rewind 5 seconds"
-          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border-strong bg-bg-inset text-text-muted shadow-inner transition hover:text-text"
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border-strong bg-bg-inset text-text-muted shadow-inner transition hover:text-text hover:bg-bg-raised active:scale-95 active:text-accent disabled:opacity-40 disabled:pointer-events-none"
         >
-          ⏪
+          <Rewind size={18} strokeWidth={2} />
         </button>
         <button
           onClick={togglePlay}
           aria-label={isPlaying ? "Pause" : "Play"}
-          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-accent text-bg shadow-[0_1px_0_rgba(245,240,232,0.35)_inset,0_2px_6px_rgba(0,0,0,0.4)] transition hover:bg-accent-hover active:translate-y-px active:shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-accent text-bg shadow-[0_1px_0_rgba(245,240,232,0.35)_inset,0_2px_6px_rgba(0,0,0,0.4)] transition hover:bg-accent-hover active:translate-y-px active:scale-95 active:shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
         >
-          {isPlaying ? "⏸" : "▶"}
+          {isPlaying ? (
+            <Pause size={20} strokeWidth={2} fill="currentColor" />
+          ) : (
+            <Play size={20} strokeWidth={2} fill="currentColor" className="ml-0.5" />
+          )}
         </button>
         <button
           onClick={() => skip(5)}
+          disabled={!duration}
           aria-label="Forward 5 seconds"
-          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border-strong bg-bg-inset text-text-muted shadow-inner transition hover:text-text"
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border-strong bg-bg-inset text-text-muted shadow-inner transition hover:text-text hover:bg-bg-raised active:scale-95 active:text-accent disabled:opacity-40 disabled:pointer-events-none"
         >
-          ⏩
+          <FastForward size={18} strokeWidth={2} />
         </button>
         <span className="shrink-0 rounded-md border border-border bg-bg-inset px-2 py-1 font-mono text-xs tabular-nums text-accent">
           {formatTime(currentTime)}
