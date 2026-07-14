@@ -32,7 +32,14 @@
       "Bash(curl -s \"http://localhost:3000/api/rhymes?word=light\")",
       "Bash(mkdir -p \"/Users/maxlevy/Documents/VerseAid/src/app/songs/[id]/read\")",
       "mcp__claude-in-chrome__read_console_messages",
-      "mcp__claude-in-chrome__javascript_tool"
+      "mcp__claude-in-chrome__javascript_tool",
+      "Bash(find /private/tmp/claude-501 -iname \"*.png\" -o -iname \"*.jpg\" -o -iname \"*.jpeg\" -o -iname \"*.svg\" 2>/dev/null | grep -v node_modules | head -20)",
+      "Bash(find /tmp /private/var/folders -maxdepth 4 -iname \"*.png\" -newer /Users/maxlevy/Downloads/VerseAid_Project_Brief.md 2>/dev/null | head -20 *)",
+      "Bash(find /private/var/folders /tmp -maxdepth 6 \\\\\\( -iname \"*.png\" -o -iname \"*.jpg\" -o -iname \"*.jpeg\" \\\\\\) -mmin -15 2>/dev/null | grep -v -E \"node_modules|Caches/com.apple|CoreSimulator\" | head -30)",
+      "Bash(pip3 install *)",
+      "Skill(artifact-design)",
+      "Skill(artifact-design:*)",
+      "Bash(rm -f /Users/maxlevy/Documents/nib_offwhite_transparent.png /Users/maxlevy/Documents/nib_amber_transparent.png /Users/maxlevy/Documents/*.b64.txt /Users/maxlevy/Documents/VerseAid/public/apple-icon-src.png *)"
     ]
   }
 }
