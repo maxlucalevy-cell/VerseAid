@@ -45,7 +45,8 @@
       "Bash(md5 /Users/maxlevy/Documents/VerseAid/src/app/globals.css)",
       "Bash(xargs -r kill -9)",
       "mcp__claude-in-chrome__resize_window",
-      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/dashboard)"
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/dashboard)",
+      "mcp__claude-in-chrome__read_network_requests"
     ]
   }
 }
