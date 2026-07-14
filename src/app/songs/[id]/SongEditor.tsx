@@ -230,6 +230,18 @@ export default function SongEditor({
     updateSectionField(sectionId, "content", newContent);
   };
 
+  const handleMatchRhymeChange = async (sectionId: string, value: boolean) => {
+    setSections((prev) =>
+      prev.map((s) =>
+        s.id === sectionId ? { ...s, match_rhyme_on_continuations: value } : s
+      )
+    );
+    await supabase
+      .from("sections")
+      .update({ match_rhyme_on_continuations: value })
+      .eq("id", sectionId);
+  };
+
   return (
     <main className="mx-auto max-w-3xl p-8">
       <div className="mb-6 flex items-center justify-between">
@@ -348,6 +360,10 @@ export default function SongEditor({
             {activeTool[section.id] === "sparks" && (
               <LineSparksPanel
                 sectionContent={section.content}
+                matchRhyme={section.match_rhyme_on_continuations}
+                onMatchRhymeChange={(value) =>
+                  handleMatchRhymeChange(section.id, value)
+                }
                 onInsertLine={(line) => handleInsertLine(section.id, line)}
               />
             )}

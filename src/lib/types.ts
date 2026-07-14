@@ -23,6 +23,7 @@ export type Section = {
   content: string;
   target_meter_ref: string | null;
   start_time: number | null;
+  match_rhyme_on_continuations: boolean;
   created_at: string;
 };
 

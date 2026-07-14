@@ -4,9 +4,13 @@ import { useState } from "react";
 
 export default function LineSparksPanel({
   sectionContent,
+  matchRhyme,
+  onMatchRhymeChange,
   onInsertLine,
 }: {
   sectionContent: string;
+  matchRhyme: boolean;
+  onMatchRhymeChange: (value: boolean) => void;
   onInsertLine: (line: string) => void;
 }) {
   const lastLine =
@@ -15,7 +19,6 @@ export default function LineSparksPanel({
       .map((l) => l.trim())
       .filter(Boolean)
       .pop() ?? "";
-  const [matchRhyme, setMatchRhyme] = useState(true);
   const [options, setOptions] = useState<string[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -59,7 +62,7 @@ export default function LineSparksPanel({
         <input
           type="checkbox"
           checked={matchRhyme}
-          onChange={(e) => setMatchRhyme(e.target.checked)}
+          onChange={(e) => onMatchRhymeChange(e.target.checked)}
         />
         Match rhyme on continuations
       </label>
