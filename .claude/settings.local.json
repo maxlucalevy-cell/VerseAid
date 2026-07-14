@@ -29,7 +29,10 @@
       "mcp__claude-in-chrome__computer",
       "Bash(curl -s \"http://localhost:3000/api/rhymes?word=heart\")",
       "Bash(curl -s \"http://localhost:3000/api/rhymes?word=mine\")",
-      "Bash(curl -s \"http://localhost:3000/api/rhymes?word=light\")"
+      "Bash(curl -s \"http://localhost:3000/api/rhymes?word=light\")",
+      "Bash(mkdir -p \"/Users/maxlevy/Documents/VerseAid/src/app/songs/[id]/read\")",
+      "mcp__claude-in-chrome__read_console_messages",
+      "mcp__claude-in-chrome__javascript_tool"
     ]
   }
 }

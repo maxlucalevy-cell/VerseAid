@@ -314,6 +314,12 @@ export default function SongEditor({
           ← Back to Library
         </Link>
         <div className="flex items-center gap-3">
+          <Link
+            href={`/songs/${song.id}/read`}
+            className="rounded-full border border-neutral-300 px-4 py-1.5 text-sm"
+          >
+            Read View
+          </Link>
           <button
             onClick={handleStatusToggle}
             className="rounded-full border border-neutral-300 px-4 py-1.5 text-sm capitalize"
