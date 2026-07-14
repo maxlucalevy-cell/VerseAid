@@ -12,6 +12,12 @@ import RhymeFinderPanel from "./tools/RhymeFinderPanel";
 import LineSparksPanel from "./tools/LineSparksPanel";
 import MatchMeterPanel from "./tools/MatchMeterPanel";
 import RevisionHistoryPanel from "./tools/RevisionHistoryPanel";
+import AudioUploader from "./AudioUploader";
+import AudioPlayerBar, { type AudioPlayerHandle } from "./AudioPlayerBar";
+import MetronomePanel from "./MetronomePanel";
+import { formatTime } from "@/lib/time";
+
+const AUDIO_BUCKET = "song-audio";
 
 type ToolName = "tip" | "rhyme" | "sparks" | "meter" | "history";
 
@@ -46,6 +52,7 @@ export default function SongEditor({
   const supabase = createClient();
   const debounce = useDebounce();
   const lastSnapshotContent = useRef<Record<string, string>>({});
+  const audioPlayerRef = useRef<AudioPlayerHandle>(null);
 
   const [title, setTitle] = useState(song.title);
   const [status, setStatus] = useState<SongStatus>(song.status);
@@ -54,6 +61,20 @@ export default function SongEditor({
   const [activeTool, setActiveTool] = useState<Record<string, ToolName | undefined>>(
     {}
   );
+  const [audioPath, setAudioPath] = useState(song.audio_url);
+  const [signedAudioUrl, setSignedAudioUrl] = useState<string | null>(null);
+  const [bpm, setBpm] = useState(song.bpm);
+
+  useEffect(() => {
+    if (!audioPath) return;
+    supabase.storage
+      .from(AUDIO_BUCKET)
+      .createSignedUrl(audioPath, 3600)
+      .then(({ data }) => {
+        if (data) setSignedAudioUrl(data.signedUrl);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [audioPath]);
 
   const recomputeRhymeScheme = useCallback((sectionId: string, content: string) => {
     computeRhymeScheme(content.split("\n")).then((scheme) => {
@@ -242,8 +263,52 @@ export default function SongEditor({
       .eq("id", sectionId);
   };
 
+  const handleAudioUploaded = async (path: string, duration: number) => {
+    setAudioPath(path);
+    await supabase
+      .from("songs")
+      .update({ audio_url: path, audio_duration: duration })
+      .eq("id", song.id);
+  };
+
+  const handleRemoveAudio = async () => {
+    if (!audioPath) return;
+    if (!confirm("Remove this song's reference audio?")) return;
+    await supabase.storage.from(AUDIO_BUCKET).remove([audioPath]);
+    await supabase
+      .from("songs")
+      .update({ audio_url: null, audio_duration: null })
+      .eq("id", song.id);
+    setAudioPath(null);
+  };
+
+  const handleBpmChange = (value: number) => {
+    setBpm(value);
+    debounce("bpm", () => {
+      supabase.from("songs").update({ bpm: value }).eq("id", song.id).then();
+    });
+  };
+
+  const handleMarkSectionStart = async (sectionId: string) => {
+    const time = audioPlayerRef.current?.getCurrentTime() ?? 0;
+    setSections((prev) =>
+      prev.map((s) => (s.id === sectionId ? { ...s, start_time: time } : s))
+    );
+    await supabase
+      .from("sections")
+      .update({ start_time: time })
+      .eq("id", sectionId);
+  };
+
+  const handlePlayFromSection = (sectionId: string) => {
+    const section = sections.find((s) => s.id === sectionId);
+    if (section?.start_time != null) {
+      audioPlayerRef.current?.seekTo(section.start_time);
+    }
+  };
+
   return (
-    <main className="mx-auto max-w-3xl p-8">
+    <main className={`mx-auto max-w-3xl p-8 ${audioPath ? "pb-28" : ""}`}>
       <div className="mb-6 flex items-center justify-between">
         <Link href="/dashboard" className="text-sm text-neutral-500 underline">
           ← Back to Library
@@ -269,6 +334,17 @@ export default function SongEditor({
         onChange={(e) => handleTitleChange(e.target.value)}
         className="mb-8 w-full border-b border-neutral-200 pb-2 text-3xl font-semibold outline-none"
       />
+
+      {!audioPath && (
+        <>
+          <AudioUploader
+            songId={song.id}
+            userId={song.user_id}
+            onUploaded={handleAudioUploaded}
+          />
+          <MetronomePanel bpm={bpm} onBpmChange={handleBpmChange} />
+        </>
+      )}
 
       <div className="flex flex-col gap-6">
         {sections.map((section, index) => (
@@ -316,6 +392,27 @@ export default function SongEditor({
                 </button>
               </div>
             </div>
+            {audioPath && (
+              <div className="mb-2 flex items-center gap-3 text-xs text-neutral-400">
+                <button
+                  onClick={() => handleMarkSectionStart(section.id)}
+                  className="hover:text-neutral-700"
+                >
+                  Mark start
+                  {section.start_time != null
+                    ? ` (${formatTime(section.start_time)})`
+                    : ""}
+                </button>
+                {section.start_time != null && (
+                  <button
+                    onClick={() => handlePlayFromSection(section.id)}
+                    className="text-neutral-600 hover:text-neutral-900"
+                  >
+                    ▶ Play from here
+                  </button>
+                )}
+              </div>
+            )}
             <div className="mb-3 flex gap-3 rounded-lg border border-neutral-200 p-3">
               <textarea
                 value={section.content}
@@ -394,6 +491,14 @@ export default function SongEditor({
       >
         + Add Section
       </button>
+
+      {audioPath && signedAudioUrl && (
+        <AudioPlayerBar
+          ref={audioPlayerRef}
+          src={signedAudioUrl}
+          onRemove={handleRemoveAudio}
+        />
+      )}
     </main>
   );
 }
