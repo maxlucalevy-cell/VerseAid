@@ -26,7 +26,10 @@
       "mcp__claude-in-chrome__navigate",
       "mcp__claude-in-chrome__get_page_text",
       "mcp__claude-in-chrome__find",
-      "mcp__claude-in-chrome__computer"
+      "mcp__claude-in-chrome__computer",
+      "Bash(curl -s \"http://localhost:3000/api/rhymes?word=heart\")",
+      "Bash(curl -s \"http://localhost:3000/api/rhymes?word=mine\")",
+      "Bash(curl -s \"http://localhost:3000/api/rhymes?word=light\")"
     ]
   }
 }
