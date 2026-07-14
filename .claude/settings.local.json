@@ -13,7 +13,14 @@
       "Bash(echo \"exit:$?\")",
       "Bash(git add *)",
       "Bash(git commit -m ' *)",
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "Bash(python3 -)",
+      "Bash(curl -s \"http://localhost:3000/api/rhymes?word=day\")",
+      "Bash(curl -s \"http://localhost:3000/api/rhymes?word=night\")",
+      "Bash(curl -s \"http://localhost:3000/api/rhymes?word=flame\")",
+      "Bash(python3 -m json.tool)",
+      "Bash(curl -s \"http://localhost:3000/api/rhymes?word=way\")",
+      "Bash(python3 -c ' *)"
     ]
   }
 }
