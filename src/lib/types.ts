@@ -84,3 +84,42 @@ export type Profile = {
   craft_suggestions_enabled: boolean;
   created_at: string;
 };
+
+export type RepeatedWordFlag = {
+  word: string;
+  count: number; // occurrences outside chorus/hook sections
+  sections: string[];
+};
+
+export type RepeatedLineFlag = {
+  line: string;
+  count: number;
+  sections: string[];
+};
+
+export type ClicheFlag = {
+  phrase: string;
+  matched_text: string;
+  count: number;
+  sections: string[];
+};
+
+export type RepetitionClicheAnalysis = {
+  repeated_words: RepeatedWordFlag[];
+  repeated_lines: RepeatedLineFlag[];
+  cliches: ClicheFlag[];
+};
+
+export type CraftAnalysis = {
+  strengths: string[];
+  observations: string[];
+};
+
+export type AnalysisResult = {
+  id: string;
+  song_id: string;
+  craft_analysis: CraftAnalysis | null;
+  commercial_fit_analysis: unknown;
+  repetition_cliche_analysis: RepetitionClicheAnalysis | null;
+  analyzed_at: string;
+};

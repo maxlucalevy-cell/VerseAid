@@ -325,6 +325,12 @@ export default function SongEditor({
           >
             Read View
           </Link>
+          <Link
+            href={`/songs/${song.id}/analyze`}
+            className="rounded-full border border-border-strong bg-bg-raised px-4 py-1.5 text-sm text-text transition hover:border-accent hover:text-accent"
+          >
+            Analyze
+          </Link>
           <button
             onClick={handleStatusToggle}
             className={`rounded-full px-4 py-1.5 text-sm font-medium capitalize transition ${
