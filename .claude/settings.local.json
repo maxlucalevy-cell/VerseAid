@@ -60,7 +60,10 @@
       "Bash(gh auth *)",
       "Read(//Users/maxlevy/**)",
       "Bash(git config *)",
-      "Bash(git fetch *)"
+      "Bash(git fetch *)",
+      "Bash(git log *)",
+      "Skill(claude-api)",
+      "Skill(claude-api:*)"
     ]
   }
 }
