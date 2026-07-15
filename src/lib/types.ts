@@ -76,3 +76,11 @@ export type LessonExerciseProgress = {
   selected_option: unknown;
   completed_at: string;
 };
+
+export type Profile = {
+  id: string;
+  email: string;
+  display_name: string | null;
+  craft_suggestions_enabled: boolean;
+  created_at: string;
+};
