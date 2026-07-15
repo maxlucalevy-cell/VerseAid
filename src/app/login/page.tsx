@@ -40,7 +40,7 @@ export default function LoginPage() {
             Welcome to VerseAid
           </h1>
           <p className="mx-auto mt-2 max-w-xs text-sm text-text-muted">
-            A songwriting coach, not a ghostwriter. Sign in to keep working on
+            A songwriting coach, not a ghostwriter. Sign in to continue working on
             your songs.
           </p>
         </div>
