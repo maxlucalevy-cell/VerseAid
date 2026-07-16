@@ -9,6 +9,7 @@ import {
 } from "react";
 import { FastForward, Pause, Play, Rewind } from "lucide-react";
 import { formatTime } from "@/lib/time";
+import { ALL_KEYS } from "@/lib/keyDetection";
 
 export type AudioPlayerHandle = {
   seekTo: (time: number) => void;
@@ -17,10 +18,24 @@ export type AudioPlayerHandle = {
 
 const SPEEDS = [0.75, 1, 1.25];
 
+// Below this confidence, an unconfirmed detected key is shown as an
+// estimate rather than stated flatly.
+const CONFIDENT_KEY_THRESHOLD = 0.6;
+
 const AudioPlayerBar = forwardRef<
   AudioPlayerHandle,
-  { src: string; onRemove: () => void }
->(function AudioPlayerBar({ src, onRemove }, ref) {
+  {
+    src: string;
+    onRemove: () => void;
+    detectedKey: string | null;
+    keyConfidence: number | null;
+    userKey: string | null;
+    onUserKeyChange: (key: string | null) => void;
+  }
+>(function AudioPlayerBar(
+  { src, onRemove, detectedKey, keyConfidence, userKey, onUserKeyChange },
+  ref
+) {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -124,6 +139,27 @@ const AudioPlayerBar = forwardRef<
         />
         <span className="shrink-0 rounded-md border border-border bg-bg-inset px-2 py-1 font-mono text-xs tabular-nums text-text-faint">
           {formatTime(duration)}
+        </span>
+        <span className="flex shrink-0 items-center gap-1 rounded-md border border-border bg-bg-inset px-2 py-1 text-xs">
+          <span className="text-text-faint">Key:</span>
+          <select
+            value={userKey ?? detectedKey ?? ""}
+            onChange={(e) => onUserKeyChange(e.target.value || null)}
+            aria-label="Song key"
+            className="cursor-pointer bg-transparent font-mono text-accent outline-none"
+          >
+            <option value="">{detectedKey ? "Auto-detected" : "Not set"}</option>
+            {ALL_KEYS.map((k) => (
+              <option key={k} value={k}>
+                {k}
+              </option>
+            ))}
+          </select>
+          {!userKey &&
+            detectedKey &&
+            (keyConfidence ?? 0) < CONFIDENT_KEY_THRESHOLD && (
+              <span className="text-text-faint">(estimated)</span>
+            )}
         </span>
         <div className="flex shrink-0 gap-1 rounded-full border border-border-strong bg-bg-inset p-1 shadow-inner">
           {SPEEDS.map((speed) => (

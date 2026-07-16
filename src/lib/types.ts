@@ -11,6 +11,9 @@ export type Song = {
   bpm: number | null;
   audio_url: string | null;
   audio_duration: number | null;
+  detected_key: string | null;
+  key_confidence: number | null;
+  user_confirmed_key: string | null;
   inspiration_angle: string | null;
   inspiration_pov: string | null;
   last_edited_at: string;

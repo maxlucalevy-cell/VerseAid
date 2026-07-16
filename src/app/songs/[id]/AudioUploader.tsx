@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { detectKey, type KeyDetectionResult } from "@/lib/keyDetection";
 
 export default function AudioUploader({
   songId,
@@ -10,7 +11,11 @@ export default function AudioUploader({
 }: {
   songId: string;
   userId: string;
-  onUploaded: (path: string, duration: number) => void;
+  onUploaded: (
+    path: string,
+    duration: number,
+    detectedKey: KeyDetectionResult | null
+  ) => void;
 }) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -42,7 +47,25 @@ export default function AudioUploader({
         );
       });
 
-      onUploaded(path, duration);
+      // Key detection is best-effort: any failure (unsupported codec,
+      // decode error, silence) leaves the key unset without touching the
+      // upload, and the user can set it manually.
+      let detectedKey: KeyDetectionResult | null = null;
+      try {
+        const audioContext = new AudioContext();
+        try {
+          const buffer = await audioContext.decodeAudioData(
+            await file.arrayBuffer()
+          );
+          detectedKey = await detectKey(buffer);
+        } finally {
+          await audioContext.close();
+        }
+      } catch {
+        detectedKey = null;
+      }
+
+      onUploaded(path, duration, detectedKey);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Upload failed");
     } finally {

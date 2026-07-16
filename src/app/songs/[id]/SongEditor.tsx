@@ -13,6 +13,7 @@ import LineSparksPanel from "./tools/LineSparksPanel";
 import MatchMeterPanel from "./tools/MatchMeterPanel";
 import RevisionHistoryPanel from "./tools/RevisionHistoryPanel";
 import AudioUploader from "./AudioUploader";
+import type { KeyDetectionResult } from "@/lib/keyDetection";
 import AudioPlayerBar, { type AudioPlayerHandle } from "./AudioPlayerBar";
 import MetronomePanel from "./MetronomePanel";
 import { formatTime } from "@/lib/time";
@@ -64,6 +65,9 @@ export default function SongEditor({
   const [audioPath, setAudioPath] = useState(song.audio_url);
   const [signedAudioUrl, setSignedAudioUrl] = useState<string | null>(null);
   const [bpm, setBpm] = useState(song.bpm);
+  const [detectedKey, setDetectedKey] = useState(song.detected_key);
+  const [keyConfidence, setKeyConfidence] = useState(song.key_confidence);
+  const [userKey, setUserKey] = useState(song.user_confirmed_key);
 
   useEffect(() => {
     if (!audioPath) return;
@@ -263,11 +267,22 @@ export default function SongEditor({
       .eq("id", sectionId);
   };
 
-  const handleAudioUploaded = async (path: string, duration: number) => {
+  const handleAudioUploaded = async (
+    path: string,
+    duration: number,
+    detected: KeyDetectionResult | null
+  ) => {
     setAudioPath(path);
+    setDetectedKey(detected?.key ?? null);
+    setKeyConfidence(detected?.confidence ?? null);
     await supabase
       .from("songs")
-      .update({ audio_url: path, audio_duration: duration })
+      .update({
+        audio_url: path,
+        audio_duration: duration,
+        detected_key: detected?.key ?? null,
+        key_confidence: detected?.confidence ?? null,
+      })
       .eq("id", song.id);
   };
 
@@ -277,9 +292,24 @@ export default function SongEditor({
     await supabase.storage.from(AUDIO_BUCKET).remove([audioPath]);
     await supabase
       .from("songs")
-      .update({ audio_url: null, audio_duration: null })
+      .update({
+        audio_url: null,
+        audio_duration: null,
+        detected_key: null,
+        key_confidence: null,
+      })
       .eq("id", song.id);
     setAudioPath(null);
+    setDetectedKey(null);
+    setKeyConfidence(null);
+  };
+
+  const handleUserKeyChange = async (value: string | null) => {
+    setUserKey(value);
+    await supabase
+      .from("songs")
+      .update({ user_confirmed_key: value })
+      .eq("id", song.id);
   };
 
   const handleBpmChange = (value: number) => {
@@ -526,6 +556,10 @@ export default function SongEditor({
           ref={audioPlayerRef}
           src={signedAudioUrl}
           onRemove={handleRemoveAudio}
+          detectedKey={detectedKey}
+          keyConfidence={keyConfidence}
+          userKey={userKey}
+          onUserKeyChange={handleUserKeyChange}
         />
       )}
     </main>
