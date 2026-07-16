@@ -16,7 +16,7 @@ export async function generateMetadata({
     .eq("id", id)
     .single();
 
-  return { title: song ? `${song.title} — Analyze` : "Analyze" };
+  return { title: song ? `${song.title} | Analyze` : "Analyze" };
 }
 
 export default async function AnalyzePage({

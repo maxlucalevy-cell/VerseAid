@@ -12,7 +12,7 @@ const TIP_RULES: { pattern: RegExp; tip: WritingTip }[] = [
     pattern: /chorus|hook|refrain/i,
     tip: {
       title: "Chorus / Hook",
-      tip: "This is the part listeners remember most. Favor simple, repeatable phrasing that says the song's core idea in as few words as possible — this isn't the place for your most complex line.",
+      tip: "This is the part listeners remember most. Favor simple, repeatable phrasing that says the song's core idea in as few words as possible. This isn't the place for your most complex line.",
     },
   },
   {
@@ -26,7 +26,7 @@ const TIP_RULES: { pattern: RegExp; tip: WritingTip }[] = [
     pattern: /bridge/i,
     tip: {
       title: "Bridge",
-      tip: "The bridge should contrast with everything before it — a new angle, a shift in perspective, or the emotional peak the rest of the song hasn't shown yet.",
+      tip: "The bridge should contrast with everything before it: a new angle, a shift in perspective, or the emotional peak the rest of the song hasn't shown yet.",
     },
   },
   {
@@ -47,7 +47,7 @@ const TIP_RULES: { pattern: RegExp; tip: WritingTip }[] = [
 
 const DEFAULT_TIP: WritingTip = {
   title: "Section",
-  tip: "Every section should earn its place. Ask what job this section does that the others don't — a new detail, a shift in energy, or a different point of view.",
+  tip: "Every section should earn its place. Ask what job this section does that the others don't: a new detail, a shift in energy, or a different point of view.",
 };
 
 export function getWritingTip(label: string): WritingTip {

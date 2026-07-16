@@ -16,7 +16,7 @@ export async function generateMetadata({
     .eq("id", id)
     .single();
 
-  return { title: song ? `${song.title} — Read View` : "Read View" };
+  return { title: song ? `${song.title} | Read View` : "Read View" };
 }
 
 export default async function ReadViewPage({

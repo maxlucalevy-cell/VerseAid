@@ -58,7 +58,7 @@ export default function MetronomePanel({
   return (
     <div className="mb-6 rounded-xl border border-border bg-bg-raised p-4 text-sm">
       <p className="mb-3 text-text-muted">
-        No audio uploaded — use tap tempo or enter a BPM manually.
+        No audio uploaded. Use tap tempo or enter a BPM manually.
       </p>
       <div className="flex flex-wrap items-center gap-4">
         <button

@@ -64,7 +64,7 @@ export default function AudioUploader({
           {uploading ? "Uploading..." : "Upload Reference Audio"}
         </span>
         <span className="text-text-faint">
-          Optional — one audio file per song
+          Optional: one audio file per song
         </span>
       </label>
       {error && <p className="mt-2 text-danger">{error}</p>}

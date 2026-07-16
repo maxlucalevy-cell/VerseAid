@@ -12,7 +12,7 @@ async function generateContinuations(
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
     throw new Error(
-      "Line Sparks isn't configured yet — add ANTHROPIC_API_KEY to your environment."
+      "Line Sparks isn't configured yet. Add ANTHROPIC_API_KEY to your environment."
     );
   }
 
@@ -27,7 +27,7 @@ async function generateContinuations(
           .join(", ")}.`
       : "";
 
-  const prompt = `You are a songwriting coach helping a beginner continue a lyric line. You never write a finished, polished line — only rough, unfinished starting points the songwriter can rework in their own voice.
+  const prompt = `You are a songwriting coach helping a beginner continue a lyric line. You never write a finished, polished line, only rough, unfinished starting points the songwriter can rework in their own voice.
 
 Previous line: "${previousLine}"
 

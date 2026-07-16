@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import LegalPageLayout from "@/components/LegalPageLayout";
 
 export const metadata: Metadata = {
-  title: "Terms of Service — VerseAid",
+  title: "Terms of Service | VerseAid",
 };
 
 export default function TermsOfServicePage() {
@@ -21,8 +21,8 @@ export default function TermsOfServicePage() {
         You retain full ownership of all lyrics, songs, and audio files you
         upload to VerseAid. We claim no ownership over your creative work.
         You&rsquo;re solely responsible for ensuring your content, including
-        any uploaded audio, doesn&rsquo;t infringe on others&rsquo; rights —
-        only upload audio you have the rights to use for personal
+        any uploaded audio, doesn&rsquo;t infringe on others&rsquo; rights.
+        Only upload audio you have the rights to use for personal
         songwriting reference.
       </p>
 
@@ -49,7 +49,7 @@ export default function TermsOfServicePage() {
       <p>
         VerseAid is provided &ldquo;as is.&rdquo; We do not guarantee
         uninterrupted availability and are not liable for lost content due to
-        service outages — we recommend exporting important songs
+        service outages. We recommend exporting important songs
         periodically using the built-in export feature.
       </p>
 

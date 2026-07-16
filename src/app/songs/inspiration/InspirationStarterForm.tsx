@@ -104,13 +104,13 @@ export default function InspirationStarterForm() {
         Inspiration Starter
       </h1>
       <p className="mb-4 text-sm text-text-muted">
-        A spark to build from, not a finished song — you write everything
+        A spark to build from, not a finished song. You write everything
         else yourself.
       </p>
 
       {showFirstUseNote && (
         <div className="mb-6 rounded-xl border border-border bg-bg-raised p-3 text-sm text-accent">
-          This gives you a spark to build from — VerseAid never writes your
+          This gives you a spark to build from. VerseAid never writes your
           song for you.
         </div>
       )}
@@ -161,7 +161,7 @@ export default function InspirationStarterForm() {
                 type="submit"
                 className="text-sm text-text-muted underline decoration-border-strong underline-offset-2 transition hover:text-text"
               >
-                Skip — just create the song
+                Skip and just create the song
               </button>
             </form>
           </div>

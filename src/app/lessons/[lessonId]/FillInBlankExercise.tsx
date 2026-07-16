@@ -47,8 +47,8 @@ export default function FillInBlankExercise({
       ) : (
         <div className="mt-3 rounded-xl border border-border bg-bg-inset p-4 text-sm">
           <p className="mb-2 text-text-muted">
-            There&apos;s no single right answer here — yours doesn&apos;t
-            need to match this, just needs to do the same job:
+            There&apos;s no single right answer here. Yours doesn&apos;t
+            need to match this, it just needs to do the same job:
           </p>
           <p className="mb-2 italic text-text">
             &quot;{feedback.example}&quot;

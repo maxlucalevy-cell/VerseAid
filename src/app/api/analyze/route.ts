@@ -17,7 +17,7 @@ async function generateCraftAnalysis(
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
     throw new Error(
-      "Craft Analysis isn't configured yet — add ANTHROPIC_API_KEY to your environment."
+      "Craft Analysis isn't configured yet. Add ANTHROPIC_API_KEY to your environment."
     );
   }
 
@@ -25,7 +25,7 @@ async function generateCraftAnalysis(
     .map((s) => `[${s.label}]\n${s.content || "(empty)"}`)
     .join("\n\n");
 
-  const prompt = `You are a songwriting coach reviewing a beginner's song. You never rewrite lyrics and never prescribe fixes — you surface strengths and observations, always leaving every decision to the writer.
+  const prompt = `You are a songwriting coach reviewing a beginner's song. You never rewrite lyrics and never prescribe fixes. You surface strengths and observations, always leaving every decision to the writer.
 
 Song title: "${title}"
 
@@ -35,7 +35,7 @@ ${lyrics}
 Respond with ONLY a JSON object, no markdown, no code fences:
 {"strengths": ["...", "..."], "observations": ["...", "..."]}
 
-Give 3-5 strengths and 3-5 observations, each one short sentence. Each strength names something specific working well (an image, a structural choice, a rhyme, the voice). Each observation points to something worth the writer's attention, framed as awareness rather than correction — "worth checking whether X lands the way you intend", never "you should change X". No scores, no grades.`;
+Give 3-5 strengths and 3-5 observations, each one short sentence. Each strength names something specific working well (an image, a structural choice, a rhyme, the voice). Each observation points to something worth the writer's attention, framed as awareness rather than correction: "worth checking whether X lands the way you intend", never "you should change X". No scores, no grades.`;
 
   const res = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",

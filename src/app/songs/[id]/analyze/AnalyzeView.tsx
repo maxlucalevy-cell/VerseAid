@@ -140,7 +140,7 @@ export default function AnalyzeView({
       </div>
 
       <h1 className="font-display mb-1 text-2xl font-semibold text-text">
-        Analyze — {song.title}
+        Analyze: {song.title}
       </h1>
       {result && (
         <p className="mb-8 text-xs text-text-faint">
@@ -156,7 +156,7 @@ export default function AnalyzeView({
 
       {!result && !error && (
         <p className="mt-4 text-sm text-text-muted">
-          Run an analysis to get a coach&rsquo;s read on your song — what&rsquo;s
+          Run an analysis to get a coach&rsquo;s read on your song: what&rsquo;s
           working, what&rsquo;s worth a second look, and any repetition or
           familiar phrasing worth being aware of. Observations, not grades.
         </p>
@@ -166,7 +166,7 @@ export default function AnalyzeView({
         <div className="flex flex-col gap-6">
           <ReportCard
             title="Craft Analysis"
-            subtitle="A coach's read on what's working and what's worth your attention — never a rewrite."
+            subtitle="A coach's read on what's working and what's worth your attention. Never a rewrite."
           >
             {craft ? (
               <div className="flex flex-col gap-4 text-sm">
@@ -196,18 +196,18 @@ export default function AnalyzeView({
             ) : (
               <p className="text-sm text-text-muted">
                 Craft Analysis didn&rsquo;t run this time
-                {craftError ? ` — ${craftError}` : "."}
+                {craftError ? `: ${craftError}` : "."}
               </p>
             )}
           </ReportCard>
 
           <ReportCard
             title="Clichés & Repetition"
-            subtitle="Deterministic checks, no AI involved. These are observations, not corrections — repetition and familiar phrases can be deliberate choices. The call is always yours."
+            subtitle="Deterministic checks, no AI involved. These are observations, not corrections. Repetition and familiar phrases can be deliberate choices, and the call is always yours."
           >
             {nothingFlagged ? (
               <p className="text-sm text-text-muted">
-                Nothing flagged — no heavy word repetition, no repeated lines
+                Nothing flagged: no heavy word repetition, no repeated lines
                 outside your chorus, and no stock phrases from our reference
                 list.
               </p>
@@ -223,7 +223,7 @@ export default function AnalyzeView({
                             {flag.word}
                           </span>{" "}
                           shows up {flag.count} times outside your chorus (in{" "}
-                          {flag.sections.join(", ")}) — sometimes that&rsquo;s a
+                          {flag.sections.join(", ")}). Sometimes that&rsquo;s a
                           deliberate motif, sometimes it&rsquo;s worth varying.
                         </li>
                       ))}
@@ -241,7 +241,7 @@ export default function AnalyzeView({
                             &ldquo;{flag.line}&rdquo;
                           </span>{" "}
                           appears {flag.count} times outside your designated
-                          chorus ({flag.sections.join(", ")}) — worth checking
+                          chorus ({flag.sections.join(", ")}). Worth checking
                           it&rsquo;s repeating by design rather than by
                           accident.
                         </li>
@@ -263,7 +263,7 @@ export default function AnalyzeView({
                             <span className="rounded-md border border-border bg-bg-inset px-1.5 py-0.5 font-mono text-xs text-text">
                               &ldquo;{flag.matched_text}&rdquo;
                             </span>{" "}
-                            (in {flag.sections.join(", ")}) — this phrase
+                            (in {flag.sections.join(", ")}). This phrase
                             appears often in songwriting. Worth checking if
                             it&rsquo;s landing fresh here, or if a more
                             specific image could hit harder.

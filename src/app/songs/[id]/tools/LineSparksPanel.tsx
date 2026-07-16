@@ -46,7 +46,7 @@ export default function LineSparksPanel({
   if (!lastLine) {
     return (
       <div className="rounded-xl border border-border bg-bg-inset p-4 text-sm text-text-muted">
-        Write a line in this section first — Line Sparks suggests rough ways
+        Write a line in this section first. Line Sparks suggests rough ways
         to continue it.
       </div>
     );
@@ -78,7 +78,7 @@ export default function LineSparksPanel({
       {options && (
         <div>
           <p className="mb-2 text-xs text-text-faint">
-            Rough starting points — edit these to make them yours, not
+            Rough starting points. Edit these to make them yours, not
             answers to drop in as-is.
           </p>
           <div className="flex flex-col gap-2">

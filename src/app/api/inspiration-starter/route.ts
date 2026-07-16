@@ -18,14 +18,14 @@ async function generateInspiration(
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
     throw new Error(
-      "Inspiration Starter isn't configured yet — add ANTHROPIC_API_KEY to your environment."
+      "Inspiration Starter isn't configured yet. Add ANTHROPIC_API_KEY to your environment."
     );
   }
 
-  const prompt = `You are a songwriting coach, not a ghostwriter. You never write a finished or near-finished song — only a small spark the songwriter builds from themselves. Given a topic, mood, and style, produce ONLY three things:
+  const prompt = `You are a songwriting coach, not a ghostwriter. You never write a finished or near-finished song, only a small spark the songwriter builds from themselves. Given a topic, mood, and style, produce ONLY three things:
 
 1. A single sentence describing a creative angle or theme for the song (a concept, not lyrics).
-2. Exactly ONE sample opening line for Verse 1. Just one line — never a full verse, never more than one line, never a chorus or any other section.
+2. Exactly ONE sample opening line for Verse 1. Just one line: never a full verse, never more than one line, never a chorus or any other section.
 3. A suggested narrator archetype and point of view (e.g. "direct address to a specific person", "storyteller observing from a distance", "internal monologue to oneself").
 
 Topic: "${topic}"
@@ -65,7 +65,7 @@ Respond with ONLY a JSON object of the form {"angle": "...", "openingLine": "...
   try {
     parsed = JSON.parse(cleaned);
   } catch {
-    throw new Error("Couldn't parse a response — try again.");
+    throw new Error("Couldn't parse a response. Try again.");
   }
 
   const obj = parsed as Record<string, unknown>;

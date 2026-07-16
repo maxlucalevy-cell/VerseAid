@@ -69,7 +69,7 @@ export default async function LessonsPage() {
           })}
           {(lessons ?? []).length === 0 && (
             <p className="text-text-muted">
-              No lesson topics yet — seed content hasn&apos;t been added.
+              No lesson topics yet. Seed content hasn&apos;t been added.
             </p>
           )}
         </div>

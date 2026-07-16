@@ -17,7 +17,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "VerseAid",
-  description: "An AI-assisted songwriting coach — not a ghostwriter.",
+  description: "An AI-assisted songwriting coach, not a ghostwriter.",
 };
 
 export const viewport: Viewport = {

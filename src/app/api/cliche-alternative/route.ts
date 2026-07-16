@@ -30,7 +30,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         error:
-          "Alternative suggestions aren't configured yet — add ANTHROPIC_API_KEY to your environment.",
+          "Alternative suggestions aren't configured yet. Add ANTHROPIC_API_KEY to your environment.",
       },
       { status: 500 }
     );
@@ -40,7 +40,7 @@ export async function POST(request: Request) {
 
   const prompt = `You are a songwriting coach. A songwriter's lyric uses the phrase "${phrase}", which appears very often in songwriting.${lineContext}
 
-Offer exactly ONE rough alternative phrasing — an unpolished starting point that conveys a similar feeling through a more specific or surprising image. It should read like a sketch the writer will rework in their own voice, never a finished, polished line. Do not explain or add commentary.
+Offer exactly ONE rough alternative phrasing: an unpolished starting point that conveys a similar feeling through a more specific or surprising image. It should read like a sketch the writer will rework in their own voice, never a finished, polished line. Do not explain or add commentary.
 
 Respond with ONLY the alternative phrasing as plain text.`;
 
@@ -70,7 +70,7 @@ Respond with ONLY the alternative phrasing as plain text.`;
       .replace(/^["']|["']$/g, "");
 
     if (!alternative) {
-      throw new Error("No suggestion generated — try again.");
+      throw new Error("No suggestion generated. Try again.");
     }
 
     return NextResponse.json({ alternative });

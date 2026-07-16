@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import LegalPageLayout from "@/components/LegalPageLayout";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — VerseAid",
+  title: "Privacy Policy | VerseAid",
 };
 
 export default function PrivacyPolicyPage() {

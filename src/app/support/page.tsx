@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import LegalPageLayout from "@/components/LegalPageLayout";
 
 export const metadata: Metadata = {
-  title: "Support — VerseAid",
+  title: "Support | VerseAid",
 };
 
 export default function SupportPage() {
@@ -18,23 +18,23 @@ export default function SupportPage() {
       <ul>
         <li>
           <strong>How do I recover a lost song?</strong>{" "}
-          Check your Song Library — your work autosaves as you type. If a
+          Check your Song Library. Your work autosaves as you type. If a
           song is missing, contact us with your account email.
         </li>
         <li>
           <strong>Can I export my lyrics?</strong>{" "}
-          Yes — open any song&rsquo;s Read View and use Copy, or export as
+          Yes. Open any song&rsquo;s Read View and use Copy, or export as
           .txt or PDF.
         </li>
         <li>
           <strong>How do AI suggestions work?</strong>{" "}
           Rhyme lookups, Line Sparks, and Inspiration Starter are optional
-          tools you can use or ignore — VerseAid never writes a full song
+          tools you can use or ignore. VerseAid never writes a full song
           for you.
         </li>
         <li>
           <strong>Is my uploaded audio private?</strong>{" "}
-          Yes — reference audio you upload is private to your account and
+          Yes. Reference audio you upload is private to your account and
           not shared or made public.
         </li>
       </ul>
