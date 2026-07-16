@@ -63,7 +63,11 @@
       "Bash(git fetch *)",
       "Bash(git log *)",
       "Skill(claude-api)",
-      "Skill(claude-api:*)"
+      "Skill(claude-api:*)",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:www.npmjs.com)",
+      "WebFetch(domain:meyda.js.org)"
     ]
   }
 }
