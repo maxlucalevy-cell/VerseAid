@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpen, Music2, User } from "lucide-react";
+import { AudioWaveform, BookOpen, Music2, User } from "lucide-react";
 
 const TABS = [
   { href: "/dashboard", label: "Songs", icon: Music2 },
   { href: "/lessons", label: "Lessons", icon: BookOpen },
+  { href: "/key-finder", label: "Key Finder", icon: AudioWaveform },
   { href: "/profile", label: "Profile", icon: User },
 ] as const;
 

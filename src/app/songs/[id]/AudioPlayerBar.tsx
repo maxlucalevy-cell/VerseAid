@@ -9,7 +9,7 @@ import {
 } from "react";
 import { FastForward, Pause, Play, Rewind } from "lucide-react";
 import { formatTime } from "@/lib/time";
-import { ALL_KEYS } from "@/lib/keyDetection";
+import { ALL_KEYS, CONFIDENT_KEY_THRESHOLD } from "@/lib/keyDetection";
 
 export type AudioPlayerHandle = {
   seekTo: (time: number) => void;
@@ -17,10 +17,6 @@ export type AudioPlayerHandle = {
 };
 
 const SPEEDS = [0.75, 1, 1.25];
-
-// Below this confidence, an unconfirmed detected key is shown as an
-// estimate rather than stated flatly.
-const CONFIDENT_KEY_THRESHOLD = 0.6;
 
 const AudioPlayerBar = forwardRef<
   AudioPlayerHandle,

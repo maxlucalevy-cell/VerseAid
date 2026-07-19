@@ -9,6 +9,10 @@ export type KeyDetectionResult = {
   confidence: number; // 0-1, margin-based heuristic
 };
 
+// Below this confidence, a detected key is displayed as an estimate rather
+// than stated flatly.
+export const CONFIDENT_KEY_THRESHOLD = 0.6;
+
 const PITCH_CLASSES = [
   "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B",
 ];
