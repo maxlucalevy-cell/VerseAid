@@ -6,6 +6,7 @@ import {
   CONFIDENT_KEY_THRESHOLD,
   type KeyDetectionResult,
 } from "@/lib/keyDetection";
+import { detectBpm, type BpmDetectionResult } from "@/lib/bpmDetection";
 
 type ToolState =
   | { status: "empty" }
@@ -14,10 +15,15 @@ type ToolState =
       status: "done";
       fileName: string;
       result: KeyDetectionResult | null;
+      bpm: BpmDetectionResult | null;
     };
 
 export default function KeyFinderTool() {
   const [state, setState] = useState<ToolState>({ status: "empty" });
+  // Client-side octave correction for the displayed BPM: beat detectors
+  // often land on double or half the felt tempo, so the user can halve or
+  // double the number without re-analyzing.
+  const [bpmMultiplier, setBpmMultiplier] = useState(1);
   const [objectUrl, setObjectUrl] = useState<string | null>(null);
   const objectUrlRef = useRef<string | null>(null);
 
@@ -38,27 +44,34 @@ export default function KeyFinderTool() {
     const url = URL.createObjectURL(file);
     objectUrlRef.current = url;
     setObjectUrl(url);
+    setBpmMultiplier(1);
     setState({ status: "analyzing", fileName: file.name });
 
     // Same best-effort contract as the song editor's upload analysis: any
-    // decode or analysis failure just means "no key found", never an error
-    // that takes down the page.
+    // decode or analysis failure just means "nothing found", never an error
+    // that takes down the page. Key and BPM fail independently, so one can
+    // still come back when the other doesn't.
     let result: KeyDetectionResult | null = null;
+    let bpm: BpmDetectionResult | null = null;
     try {
       const audioContext = new AudioContext();
       try {
         const buffer = await audioContext.decodeAudioData(
           await file.arrayBuffer()
         );
-        result = await detectKey(buffer);
+        [result, bpm] = await Promise.all([
+          detectKey(buffer).catch(() => null),
+          detectBpm(buffer),
+        ]);
       } finally {
         await audioContext.close();
       }
     } catch {
       result = null;
+      bpm = null;
     }
 
-    setState({ status: "done", fileName: file.name, result });
+    setState({ status: "done", fileName: file.name, result, bpm });
   };
 
   return (
@@ -101,21 +114,61 @@ export default function KeyFinderTool() {
             </p>
           )}
 
-          {state.status === "done" && state.result && (
-            <p className="text-sm text-text-muted">
-              <span className="rounded-md border border-border bg-bg-inset px-2 py-1 font-mono text-xs text-accent">
-                Key: {state.result.key}
-                {state.result.confidence < CONFIDENT_KEY_THRESHOLD &&
-                  " (estimated)"}
-              </span>
-            </p>
+          {state.status === "done" && (state.result || state.bpm) && (
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-text-muted">
+              {state.result && (
+                <span className="rounded-md border border-border bg-bg-inset px-2 py-1 font-mono text-xs text-accent">
+                  Key: {state.result.key}
+                  {state.result.confidence < CONFIDENT_KEY_THRESHOLD &&
+                    " (estimated)"}
+                </span>
+              )}
+              {state.bpm && (
+                <span className="flex items-center gap-2">
+                  <span className="rounded-md border border-border bg-bg-inset px-2 py-1 font-mono text-xs text-accent">
+                    BPM: {Math.round(state.bpm.bpm * bpmMultiplier)}
+                  </span>
+                  <span className="flex gap-1">
+                    <button
+                      onClick={() =>
+                        setBpmMultiplier((m) => (m === 0.5 ? 1 : 0.5))
+                      }
+                      title="Sounds like half time? Halve the number."
+                      className={`rounded-full border px-2 py-0.5 text-xs transition ${
+                        bpmMultiplier === 0.5
+                          ? "border-accent bg-accent text-bg"
+                          : "border-border bg-bg-inset text-text-muted shadow-inner hover:border-border-strong hover:text-text"
+                      }`}
+                    >
+                      ½×
+                    </button>
+                    <button
+                      onClick={() =>
+                        setBpmMultiplier((m) => (m === 2 ? 1 : 2))
+                      }
+                      title="Sounds like double time? Double the number."
+                      className={`rounded-full border px-2 py-0.5 text-xs transition ${
+                        bpmMultiplier === 2
+                          ? "border-accent bg-accent text-bg"
+                          : "border-border bg-bg-inset text-text-muted shadow-inner hover:border-border-strong hover:text-text"
+                      }`}
+                    >
+                      2×
+                    </button>
+                  </span>
+                  <span className="text-xs text-text-faint">
+                    tempo detectors sometimes hear half or double time
+                  </span>
+                </span>
+              )}
+            </div>
           )}
 
-          {state.status === "done" && !state.result && (
+          {state.status === "done" && !state.result && !state.bpm && (
             <p className="text-sm text-text-muted">
-              Couldn&apos;t settle on a key for this one. That can happen with
-              unsupported formats, very short clips, or ambiguous harmony.
-              Another file might read more clearly.
+              Couldn&apos;t settle on a key or tempo for this one. That can
+              happen with unsupported formats, very short clips, or ambiguous
+              material. Another file might read more clearly.
             </p>
           )}
         </div>
