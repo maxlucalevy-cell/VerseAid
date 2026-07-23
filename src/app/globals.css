@@ -53,6 +53,26 @@ body {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
+/* Login backdrop layers: faint music-staff ruling across the full page,
+   and a warm radial pool of accent light centered slightly above middle to
+   read as a single lamp over the writing desk. Both sit behind content. */
+.staff-lines {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 23px,
+    rgba(245, 240, 232, 0.035) 23px,
+    rgba(245, 240, 232, 0.035) 24px
+  );
+}
+.stage-vignette {
+  background: radial-gradient(
+    ellipse 70% 55% at 50% 38%,
+    rgba(212, 149, 42, 0.1),
+    transparent 70%
+  );
+}
+
 /* One fade-in per section load — minimal, no repeated/looping motion.
    Opacity-only: a transform here (even a no-op translateY(0) left behind by
    `animation-fill-mode: both`) would make this element a containing block
